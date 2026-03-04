@@ -20,42 +20,14 @@
 
 ## 📋 前提条件
 
-在安装和使用之前，请确保你的系统满足以下要求：
+在安装和使用之前，请确保：
 
-### 必需软件
+1. 已安装 **Python 3.11+**
+2. 已安装 **Ollama** 并启动服务（`ollama serve`）
+3. 已安装 **Chrome 浏览器**
+4. 已下载至少一个 **AI 模型**
 
-1. **Python 3.11+**
-   ```bash
-   python3 --version
-   ```
-
-2. **Ollama**
-   - 访问 [Ollama 官网](https://ollama.ai) 下载并安装
-   - 或使用 Homebrew 安装：
-     ```bash
-     brew install ollama
-     ```
-   - 启动 Ollama 服务：
-     ```bash
-     ollama serve
-     ```
-
-3. **Chrome 浏览器**（或其他基于 Chromium 的浏览器）
-
-### AI 模型
-
-需要下载至少一个 AI 模型：
-
-```bash
-# 推荐模型（默认，最快）
-ollama pull qwen2.5:1.5b
-
-# 可选模型（更准确）
-ollama pull qwen3.5:2b
-
-# 可选模型（最强，但较慢）
-ollama pull qwen3.5:9b
-```
+详细的平台支持、工具要求和安全隐私说明请参见下方的相应章节。
 
 ## 📦 快速开始
 
@@ -269,9 +241,103 @@ ollama pull qwen2.5:1.5b
 - **浏览器扩展**：Chrome Extension Manifest V3
 - **流式传输**：Server-Sent Events (SSE)
 
+## 🔒 安全与隐私
+
+### 数据处理说明
+
+- **完全本地运行**：所有 AI 处理均在本地完成，文本内容不会上传到任何远程服务器
+- **Ollama 本地服务**：本项目依赖 Ollama 本地运行 AI 模型，确保数据隐私
+- **网络连接**：仅在本地扩展与本地后端服务之间通信（127.0.0.1:8000），无需外网连接
+
+### 已知风险
+
+- **本地服务依赖**：需要持续运行后端服务（`backend.py`），服务中断将导致扩展无法使用
+- **模型质量限制**：AI 解释的准确性取决于所选模型的能力，可能存在解释不准确的情况
+- **系统资源消耗**：运行 AI 模型会占用 CPU/GPU 和内存资源，大模型（如 9B）对硬件要求较高
+
+### 使用建议
+
+- 敏感信息使用时请确保本地环境安全
+- 定期更新 Ollama 模型以获得更好的性能
+- 根据硬件性能选择合适的模型大小
+
+## 🖥️ 支持的平台
+
+- **操作系统**：macOS、Linux、Windows
+- **浏览器**：Chrome（推荐）、Edge、Brave 等 Chromium 系浏览器
+- **Python 版本**：3.11+
+
+## 📋 需要的工具
+
+### 必需软件
+
+1. **Python 3.11+**
+   ```bash
+   python3 --version
+   ```
+
+2. **Ollama**
+   - 访问 [Ollama 官网](https://ollama.ai) 下载并安装
+   - 或使用 Homebrew 安装（macOS/Linux）：
+     ```bash
+     brew install ollama
+     ```
+   - 启动 Ollama 服务：
+     ```bash
+     ollama serve
+     ```
+
+3. **Chrome 浏览器**（或其他基于 Chromium 的浏览器）
+
+### Python 依赖
+
+项目使用以下 Python 库（详见 `requirements.txt`）：
+- FastAPI - Web 框架
+- Uvicorn - ASGI 服务器
+- Pydantic - 数据验证
+- httpx - 异步 HTTP 客户端
+- ollama - Ollama Python 客户端
+
+### AI 模型
+
+需要下载至少一个 AI 模型：
+
+```bash
+# 推荐模型（默认，最快）
+ollama pull qwen2.5:1.5b
+
+# 可选模型（更准确）
+ollama pull qwen3.5:2b
+
+# 可选模型（最强，但较慢）
+ollama pull qwen3.5:9b
+```
+
 ## 📄 许可证
 
-本项目仅供学习和个人使用。
+本项目采用 MIT 许可证开源。
+
+MIT License
+
+Copyright (c) 2025
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 ## 🤝 贡献
 
