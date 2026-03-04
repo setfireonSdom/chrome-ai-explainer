@@ -5,6 +5,7 @@ console.log('🚀 Content script loaded on:', window.location.href);
 let explainButton = null;
 let isExplaining = false;
 let cachedSelectedText = null; // 缓存选中的文本
+let mouseUpTimer = null; // 用于防抖的定时器
 
 // 创建解释按钮
 function createExplainButton(text) {
@@ -31,6 +32,7 @@ function createExplainButton(text) {
     button.dataset.selectedText = text;
     cachedSelectedText = text;
 
+    // 添加鼠标事件
     button.addEventListener('mouseenter', () => {
         button.style.transform = 'scale(1.05)';
         button.style.boxShadow = '0 6px 16px rgba(102, 126, 234, 0.5)';
@@ -120,24 +122,35 @@ function sendToBackground(text) {
     });
 }
 
-// 监听文本选择
-document.addEventListener('mouseup', (e) => {
-    setTimeout(() => {
-        const selectedText = window.getSelection().toString().trim();
+// 处理文本选择（带防抖）
+function handleTextSelection() {
+    const selectedText = window.getSelection().toString().trim();
 
-        if (selectedText && selectedText.length > 0) {
-            console.log('📝 Text selected:', selectedText);
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const rect = range.getBoundingClientRect();
-                showButton(rect.left + rect.width / 2, rect.top, selectedText);
-            }
-        } else {
-            hideButton();
-            cachedSelectedText = null;
+    if (selectedText && selectedText.length > 0) {
+        console.log('📝 Text selected:', selectedText);
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const rect = range.getBoundingClientRect();
+            showButton(rect.left + rect.width / 2, rect.top, selectedText);
         }
-    }, 10);
+    } else {
+        hideButton();
+        cachedSelectedText = null;
+    }
+}
+
+// 监听文本选择（使用防抖，避免频繁触发）
+document.addEventListener('mouseup', (e) => {
+    // 清除之前的定时器
+    if (mouseUpTimer) {
+        clearTimeout(mouseUpTimer);
+    }
+    
+    // 设置新的定时器，延迟处理
+    mouseUpTimer = setTimeout(() => {
+        handleTextSelection();
+    }, 150);
 });
 
 // 监听键盘事件（ESC 隐藏按钮）
@@ -162,5 +175,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         hideButton();
     } else if (request.action === 'done') {
         isExplaining = false;
+    }
+});
+
+// 清理函数：当页面卸载时清理资源
+window.addEventListener('beforeunload', () => {
+    if (mouseUpTimer) {
+        clearTimeout(mouseUpTimer);
+        mouseUpTimer = null;
+    }
+    if (explainButton) {
+        explainButton.remove();
+        explainButton = null;
     }
 });
