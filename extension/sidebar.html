@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Text Explainer</title>
+    <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI 文本解释器</h1>
+            <div class="status" id="status">
+                <span class="status-dot"></span>
+                <span class="status-text">就绪</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="input-section">
+                <label for="selectedText">选中的文本：</label>
+                <textarea id="selectedText" placeholder="选中网页中的文字后点击解释按钮..."></textarea>
+            </div>
+
+            <div class="controls">
+                <select id="modelSelect">
+                    <!-- 模型选项将由 JavaScript 动态生成 -->
+                </select>
+                <button id="explainBtn" class="btn-primary">
+                    <span class="btn-text">解释</span>
+                    <span class="btn-loader"></span>
+                </button>
+            </div>
+
+            <div class="output-section">
+                <label>AI 解释：</label>
+                <div id="output" class="output">
+                    <div class="placeholder">解释内容将显示在这里...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <small>本地 AI 模型 - 无需联网</small>
+        </div>
+    </div>
+
+    <script src="sidebar.js"></script>
+</body>
+</html>
