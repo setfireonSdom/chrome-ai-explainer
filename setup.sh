@@ -11,25 +11,6 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# 检查 Python 版本
-echo "📋 检查 Python 版本..."
-if ! command -v python3 &> /dev/null; then
-    echo -e "${RED}❌ Python 3 未安装${NC}"
-    echo "请访问 https://www.python.org/downloads/ 下载安装 Python 3.11 或更高版本"
-    exit 1
-fi
-
-PYTHON_VERSION=$(python3 --version 2>&1 | awk '{print $2}')
-PYTHON_MAJOR=$(echo $PYTHON_VERSION | cut -d. -f1)
-PYTHON_MINOR=$(echo $PYTHON_VERSION | cut -d. -f2)
-
-echo -e "${GREEN}✓${NC} Python 版本: $PYTHON_VERSION"
-
-if [ "$PYTHON_MAJOR" -lt 3 ] || ([ "$PYTHON_MAJOR" -eq 3 ] && [ "$PYTHON_MINOR" -lt 11 ]); then
-    echo -e "${RED}❌ Python 版本过低，需要 3.11 或更高版本${NC}"
-    exit 1
-fi
-
 # 检查 uv 是否安装
 echo ""
 echo "📋 检查 uv..."
@@ -48,12 +29,14 @@ fi
 echo ""
 echo "📋 检查虚拟环境..."
 if [ ! -d ".venv" ]; then
-    echo "创建虚拟环境（使用 Python 3.11）..."
+    echo "创建虚拟环境（使用 Python 3.11，uv 会自动下载如果需要）..."
     uv venv --python 3.11
     echo -e "${GREEN}✓${NC} 虚拟环境创建完成"
 else
     echo -e "${GREEN}✓${NC} 虚拟环境已存在"
 fi
+
+
 
 # 安装 Python 依赖
 echo ""
