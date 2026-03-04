@@ -81,6 +81,15 @@ function initializeModelSelect() {
 // 初始化模型选择器
 initializeModelSelect();
 
+// 监听新文本选择时清除旧内容
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === 'local' && changes.textToExplain && changes.textToExplain.newValue) {
+        // 新文本被选中时，立即清除旧内容
+        output.innerHTML = '';
+        console.log('🧹 Cleared previous content for new text');
+    }
+});
+
 // 更新状态
 function updateStatus(status) {
     statusDot.classList.remove('busy', 'error');
@@ -135,7 +144,6 @@ async function streamResponse(reader) {
                             currentContent += data.content;
                             // 使用 innerHTML 并进行简单的文本格式化
                             output.innerHTML = formatContent(currentContent);
-                            output.scrollTop = output.scrollHeight;
                         }
                         
                         if (data.error) {
