@@ -48,8 +48,8 @@ fi
 echo ""
 echo "📋 检查虚拟环境..."
 if [ ! -d ".venv" ]; then
-    echo "创建虚拟环境..."
-    uv venv
+    echo "创建虚拟环境（使用 Python 3.11）..."
+    uv venv --python 3.11
     echo -e "${GREEN}✓${NC} 虚拟环境创建完成"
 else
     echo -e "${GREEN}✓${NC} 虚拟环境已存在"
